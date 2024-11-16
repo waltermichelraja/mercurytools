@@ -13,8 +13,6 @@ Data Structures as a python package
 - **Deque**: Deque clas with hybrid functionalities
 - **Stack**: simple Stack class with the necessary functions
 
----
-
 ## 📦 Installation
 
 Install the package using pip:
@@ -43,3 +41,4 @@ This project is licensed under the MIT License. See the [LICENSE](https://github
 ## 🐛 Bug Reports
 If you encounter any issues or bugs, please open an issue on [ISSUES](https://github.com/waltermichelraja/mercurydsa/issues)
 
+---
