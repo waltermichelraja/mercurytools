@@ -1,0 +1,6 @@
+README.md
+setup.py
+mercurydsa.egg-info/PKG-INFO
+mercurydsa.egg-info/SOURCES.txt
+mercurydsa.egg-info/dependency_links.txt
+mercurydsa.egg-info/top_level.txt
