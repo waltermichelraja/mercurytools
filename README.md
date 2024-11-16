@@ -31,15 +31,15 @@ dq=Deque()
 s=Stack()
 ```
 
-##🛠️ Development Setup
+## 🛠️ Development Setup
 - clone repository:
 ```bash
 git clone https://github.com/waltermichelraja/mercurydsa.git
 ```
 
-##📄 License
+## 📄 License
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/waltermichelraja/mercurydsa/blob/main/README.md) file for details. 
 
-##🐛 Bug Reports
+## 🐛 Bug Reports
 If you encounter any issues or bugs, please open an issue on [ISSUES](https://github.com/waltermichelraja/mercurydsa/issues)
 
