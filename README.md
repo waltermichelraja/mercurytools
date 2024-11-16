@@ -18,6 +18,8 @@ Data Structures as a python package
 Install the package using pip:
 ```bash
 pip install mercurydsa
+
+mercurydsa-version
 ```
 
 ## 🔧 Example Usage
