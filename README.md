@@ -2,7 +2,7 @@
 
 [![PyPI Version](https://badge.fury.io/py/your-package-name.svg)](https://pypi.org/project/your-package-name/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python Versions](https://img.shields.io/pypi/pyversions/your-package-name.svg)](https://pypi.org/project/your-package-name/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/your-package-name.svg)](https://pypi.org/project/mercurydsa/)
 
 A brief description of your project, its purpose, and why it’s useful.
 
