@@ -36,9 +36,9 @@ git clone https://github.com/waltermichelraja/mercurydsa.git
 ```
 
 ## 📄 License
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/waltermichelraja/mercurydsa/blob/main/README.md) file for details. 
+This project is licensed under the MIT License, checkout the [license](https://github.com/waltermichelraja/mercurydsa/blob/main/README.md) file for further details. 
 
 ## 🐛 Bug Reports
-If you encounter any issues or bugs, please open an issue on [ISSUES](https://github.com/waltermichelraja/mercurydsa/issues)
+If you encounter any issues or bugs, please open an issue on [issues](https://github.com/waltermichelraja/mercurydsa/issues)
 
 ---
