@@ -77,6 +77,9 @@ class Layout:
         def __setattr__(self, key, value):
             currentmodule = sys.modules[self.__module__]
             currentframe = inspect.getmodule(inspect.currentframe().f_back)
+            if key=="data":
+                super().__setattr__(key, value)
+                return
             if currentmodule and currentframe:
                 if (currentmodule.__name__==currentframe.__name__ or 
                     currentframe.__name__.startswith("mercury")):
