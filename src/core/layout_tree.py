@@ -1,12 +1,11 @@
 import inspect, sys
 from .exceptions import *
 
-class Layout:
+class TreeLayout:
     def __init__(self) -> None:
-        self.head=None
-        self.tail=None
-        self.length=0
-    
+        self.root=None
+        self.size=0
+
     def __setattr__(self, key, value):
         module = sys.modules[self.__module__]
         #core = sys.modules["mercury.src.core.layout"]
@@ -17,7 +16,7 @@ class Layout:
         super().__setattr__(key, value)
 
     def __getitem__(self, index) -> int:
-        if not self.head or index >= self.length or index < -self.length:
+        if not self.head or index >= self.size or index < -self.size:
             raise LayoutIndexError()
         if index >= 0:
             current = self.head
@@ -36,7 +35,7 @@ class Layout:
         raise LayoutIndexError()
 
     def __setitem__(self, index, value):
-        if not self.head or index >= self.length or index < -self.length:
+        if not self.head or index >= self.size or index < -self.size:
             raise LayoutIndexError()
         if index >= 0:
             current = self.head
@@ -55,24 +54,13 @@ class Layout:
                 current.data = value
                 return
         raise LayoutIndexError()
-      
-    def __repr__(self) -> str:
-        nodes=[]
-        current=self.head
-        if not current:
-            return "{0} < >".format(self.__class__.__name__)
-        while current:
-            if current.data==self: nodes.append("<...>"); current=current.next_node; continue
-            nodes.append("{0}".format(current.data))
-            current=current.next_node
-        return "{0} < {1} >".format(self.__class__.__name__, " ; ".join(nodes))
 
-    class Node():
+    class Node:
         def __init__(self, data) -> None:
             self.data=data
             self.index=None
-            self.next_node=None
-            self.prev_node=None
+            self.parent=None
+            self.child=None
 
         def __setattr__(self, key, value):
             currentmodule = sys.modules[self.__module__]
@@ -88,54 +76,16 @@ class Layout:
                     raise LayoutAttributeError(LayoutAttributeError.msg.format(key))
             else:
                 raise LayoutAttributeError(LayoutAttributeError.msg.format(key))
-            
-        def __repr__(self) -> str:
-            return "{0} < data: {1} >".format(self.__class__.__name__, self.data)
 
     class Manager:
-        def __init__(self) -> None:
+        def __init__(self):
             pass
-
+        
         def is_empty(self):
-            return self.head is None
+            return self.root is None
         
         def is_node(self, data):
-            if type(data)==type(Layout.Node(data)):
+            if type(data)==type(TreeLayout.Node(data)):
                 return True
             else:
                 return False
-        
-        def __update_indices_after_remove(self, start_node):
-            current = start_node
-            while current:
-                current.index -= 1
-                current = current.next_node
-
-        def __update_indices_after_insert(self, start_node):
-            current = start_node
-            while current:
-                current.index += 1
-                current = current.next_node
-
-    def fetchindex(self, data) -> int:
-        if not self.head:
-            return 
-        else:
-            current=self.head
-            while current:
-                if current.data==data:
-                    return current.index
-                current=current.next_node
-            return
-        
-"""    def fetchnode(self, index):
-        if not self.head:
-            return
-        else:
-            current=self.head
-            while current.index==index:
-                return current.data
-            current=current.next_node
-        return
-"""
-

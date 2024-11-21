@@ -1,6 +1,6 @@
-from ..core.layout import Layout
+from ..core.layout_linear import LinearLayout
 
-class LinkedList(Layout):
+class LinkedList(LinearLayout):
     def __init__(self) -> None:
         super().__init__()
         

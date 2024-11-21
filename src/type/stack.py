@@ -1,6 +1,6 @@
-from ..core.layout import Layout
+from ..core.layout_linear import LinearLayout
 
-class Stack(Layout):
+class Stack(LinearLayout):
     def __init__(self) -> None:
         super().__init__()
                 
