@@ -10,7 +10,7 @@ Data Structures as a python package
 ## 🚀 Features
 
 - **Linked List**: an advanced LinkedList class to experiment the working of linked lists
-- **Deque**: Deque clas with hybrid functionalities
+- **Deque**: Deque class with hybrid functionalities
 - **Stack**: simple Stack class with the necessary functions
 
 ## 📦 Installation
