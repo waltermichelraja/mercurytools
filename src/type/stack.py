@@ -1,15 +1,14 @@
 from ..core.layout_linear import LinearLayout
 
 class Stack(LinearLayout):
-    def __init__(self) -> None:
+    def __init__(self)->None:
         super().__init__()
                 
-    def push(self, data) -> None:
+    def push(self, data)->None:
         if super().Manager().is_node(data):
             data=data.data
         new_node=super().Node(data)
         new_node.index=self.length
-
         if self.head is None:
             self.head=new_node
             self.tail=new_node
