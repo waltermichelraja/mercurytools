@@ -1,4 +1,5 @@
-import inspect, sys
+# Work in progress
+""" import inspect, sys
 from .exceptions import *
 
 class TreeLayout:
@@ -89,3 +90,4 @@ class TreeLayout:
                 return True
             else:
                 return False
+ """
