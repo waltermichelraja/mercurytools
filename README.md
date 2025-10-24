@@ -44,3 +44,7 @@ This project is licensed under the MIT License, checkout the [license](https://g
 If you encounter any issues or bugs, please open an issue on [issues](https://github.com/waltermichelraja/mercurytools/issues)
 
 ---
+## contributors:
+```python
+Zack Digits
+```
