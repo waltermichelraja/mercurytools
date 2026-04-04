@@ -2,8 +2,13 @@
 __pycache__/
 *.py[cod]
 
+# credentials
+.pypirc
+
 # packaging artifacts
 *.egg-info/
+build/
+dist/
 
 # venvironment
 env/
