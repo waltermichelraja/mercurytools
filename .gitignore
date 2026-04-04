@@ -1,2 +1,10 @@
+# cache
+__pycache__/
 *.py[cod]
-*.so
+
+# packaging artifacts
+*.egg-info/
+
+# venvironment
+env/
+*.env

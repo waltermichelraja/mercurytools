@@ -1,0 +1,17 @@
+[build-system]
+requires=["setuptools","wheel"]
+build-backend="setuptools.build_meta"
+
+[project]
+name="mercurytools"
+version="2.0.0"
+description="Extensible data structures library"
+authors=[{name = "Walter Michel Raja"}]
+requires-python=">=3.10"
+dependencies=[]
+
+[project.scripts]
+mercurytools="mercurytools.cli.main:main"
+
+[tool.setuptools.packages.find]
+where=["src"]
