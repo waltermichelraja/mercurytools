@@ -5,10 +5,16 @@ build-backend="setuptools.build_meta"
 [project]
 name="mercurytools"
 version="2.0.0"
-description="Extensible data structures library"
-authors=[{name = "Walter Michel Raja"}]
-requires-python=">=3.10"
-dependencies=[]
+description="a lightweight and consistent data structures library"
+readme="README.md"
+license={text="MIT"}
+authors=[{name="Walter Michel Raja"}]
+maintainers=[{name="Walter Michel Raja",email="waltermichelraja@gmail.com"}]
+classifiers=[
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
 
 [project.scripts]
 mercurytools="mercurytools.cli.main:main"
