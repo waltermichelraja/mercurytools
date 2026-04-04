@@ -1,2 +1,15 @@
+# cache
+__pycache__/
 *.py[cod]
-*.so
+
+# credentials
+.pypirc
+
+# packaging artifacts
+*.egg-info/
+build/
+dist/
+
+# venvironment
+env/
+*.env

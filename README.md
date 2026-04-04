@@ -1,46 +1,27 @@
 # mercurytools
 
-[![PyPI Version](https://badge.fury.io/py/your-package-name.svg)](https://pypi.org/project/mercurydsa/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+a lightweight and consistent set of data structures designed for clarity, predictability, and ease of use in everyday development. Built to provide a clean, pythonic interface over fundamental data structures, with an emphasis on readability and extensibility rather than abstraction-heavy implementations.
 
-Data Structures as a python package
+## installation
 
----
-
-## 🚀 Features
-
-- **Linked List**: an advanced LinkedList class to experiment the working of linked lists
-- **Deque**: Deque class with hybrid functionalities
-- **Stack**: simple Stack class with the necessary functions
-
-## 📦 Installation
-
-Install the package using pip:
 ```bash
+# install from PyPI
 pip install mercurytools
 
-mercurytools-version
-```
-
-## 🔧 Example Usage
-```py
-from mercurytools import *
-
-ll=LinkedList()
-dq=Deque()
-s=Stack()
-```
-
-## 🛠️ Development Setup
-- clone repository:
-```bash
+# development
 git clone https://github.com/waltermichelraja/mercurytools.git
+pip install -e .
+pytest
 ```
 
-## 📄 License
-This project is licensed under the MIT License, checkout the [license](https://github.com/waltermichelraja/mercurytools/blob/main/README.md) file for further details. 
+## overview
+| structure   | operations |
+|:-----------|:-----------|
+| LinkedList | `append`, `prepend`, `insert`, `remove`, `pop`, `extend`, `reverse`, `clear`, `copy` |
+| Stack      | `push`, `pop`, `peek` |
+| Deque      | `append`, `appendleft`, `pop`, `popleft` |
 
-## 🐛 Bug Reports
-If you encounter any issues or bugs, please open an issue on [issues](https://github.com/waltermichelraja/mercurytools/issues)
+<br>
 
----
+***LICENSE:** this project is licensed under the MIT License, checkout [license](https://github.com/waltermichelraja/mercurytools/blob/main/LICENSE) file for further details.*\
+***BUG REPORTS:** if you encounter a bug or unexpected behavior, please open an issue in: [issues](https://github.com/waltermichelraja/mercurytools/issues)*
