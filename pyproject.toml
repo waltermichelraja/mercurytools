@@ -4,15 +4,15 @@ build-backend="setuptools.build_meta"
 
 [project]
 name="mercurytools"
-version="2.0.0"
+dynamic=["version"]
 description="a lightweight and consistent data structures library"
 readme="README.md"
-license={text="MIT"}
+license="MIT"
+license-files=["LICENSE"]
 authors=[{name="Walter Michel Raja"}]
 maintainers=[{name="Walter Michel Raja",email="waltermichelraja@gmail.com"}]
 classifiers=[
   "Programming Language :: Python :: 3",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent"
 ]
 
@@ -21,3 +21,6 @@ mercurytools="mercurytools.cli.main:main"
 
 [tool.setuptools.packages.find]
 where=["src"]
+
+[tool.setuptools.dynamic]
+version={attr="mercurytools.__version__.__version__"}
