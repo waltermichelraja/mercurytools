@@ -63,7 +63,7 @@ class PriorityQueue:
         while i>0:
             p=self._parent(i)
             try:
-                if self._priority(self._data[i])<self._priority(self._data[p]):
+                if self._data[i]<self._data[p]:
                     self._swap(i,p)
                     i=p
                 else:
@@ -78,9 +78,9 @@ class PriorityQueue:
             right=self._right(i)
             smallest=i
             try:
-                if left<size and self._priority(self._data[left])<self._priority(self._data[smallest]):
+                if left<size and self._data[left]<self._data[smallest]:
                     smallest=left
-                if right<size and self._priority(self._data[right])<self._priority(self._data[smallest]):
+                if right<size and self._data[right]<self._data[smallest]:
                     smallest=right
             except TypeError:
                 raise TypeError("values are not comparable for priority queue")
