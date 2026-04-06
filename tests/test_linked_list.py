@@ -1,5 +1,4 @@
-from mercurytools import LinkedList
-
+from mercurytools.linear import LinkedList
 
 def test_append():
     ll=LinkedList()

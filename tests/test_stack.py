@@ -1,5 +1,4 @@
-from mercurytools import Stack
-
+from mercurytools.linear import Stack
 
 def test_push_pop():
     s=Stack()
