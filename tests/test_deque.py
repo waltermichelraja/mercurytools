@@ -1,5 +1,4 @@
-from mercurytools import Deque
-
+from mercurytools.linear import Deque
 
 def test_append_pop():
     d=Deque()

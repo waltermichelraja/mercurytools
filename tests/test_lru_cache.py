@@ -1,5 +1,4 @@
-from mercurytools import LRUCache
-
+from mercurytools.utils import LRUCache
 
 def test_put_get():
     cache=LRUCache(2)

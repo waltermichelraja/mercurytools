@@ -1,5 +1,5 @@
 import pytest
-from mercurytools import PriorityQueue
+from mercurytools.linear import PriorityQueue
 
 
 def test_basic_push_pop():
