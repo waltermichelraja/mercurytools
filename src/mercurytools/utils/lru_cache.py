@@ -1,11 +1,4 @@
-class _Node:
-    __slots__=("key","value","prev","next")
-
-    def __init__(self,key,value):
-        self.key=key
-        self.value=value
-        self.prev=None
-        self.next=None
+from ..core.nodes import LRUNode as Node
 
 
 class LRUCache:
@@ -42,7 +35,7 @@ class LRUCache:
             node.value=value
             self._move_to_head(node)
             return
-        new_node=_Node(key,value)
+        new_node=Node(key,value)
         self._map[key]=new_node
         self._add_to_head(new_node)
         if len(self._map)>self._capacity:

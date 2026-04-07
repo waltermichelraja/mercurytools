@@ -1,5 +1,5 @@
-from ..core.base import LinearBase
-from ..core.node import Node
+from ..core.base_linear import LinearBase
+from ..core.nodes import LinearNode as Node
 from ..core.exceptions import IndexOutOfBoundsError
 
 

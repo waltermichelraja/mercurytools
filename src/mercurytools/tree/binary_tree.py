@@ -1,49 +1,14 @@
+from ..core.nodes import BinaryTreeNode as Node
+from ..core.base_tree import TreeBase
 from collections import deque
 
 
-class _Node:
-    __slots__=("data","left","right")
-
-    def __init__(self,data):
-        self.data=data
-        self.left=None
-        self.right=None
-
+class BinaryTree(TreeBase):
     def __repr__(self):
-        return f"Node({self.data})"
-
-
-class BinaryTree:
-    def __init__(self):
-        self._root=None
-        self._size=0
-
-    def __len__(self):
-        return self._size
-
-    def __repr__(self):
-        return f"BinaryTree({list(self.level_order())})"
-
-    def __setattr__(self,name,value):
-        if name in {"_root","_size"}:
-            if name in self.__dict__:
-                import inspect
-                caller=inspect.stack()[1].frame.f_globals.get("__name__")
-                if caller!=__name__:
-                    raise AttributeError(f"{name} is read-only")
-        super().__setattr__(name,value)
-
-    @property
-    def size(self):
-        return self._size
-
-    @property
-    def root(self):
-        return self._root
-
+        return f"{self.__class__.__name__}({list(self.level_order())})"
 
     def insert(self,data):
-        new_node=_Node(data)
+        new_node=Node(data)
         if not self._root:
             self._root=new_node
             self._size+=1
@@ -103,10 +68,7 @@ class BinaryTree:
 
 
     def find(self,value):
-        for item in self.level_order():
-            if item==value:
-                return True
-        return False
+        return any(item==value for item in self.level_order())
 
     def height(self):
         def _height(node):
@@ -114,7 +76,3 @@ class BinaryTree:
                 return -1
             return 1+max(_height(node.left),_height(node.right))
         return _height(self._root)
-
-    def clear(self):
-        self._root=None
-        self._size=0
