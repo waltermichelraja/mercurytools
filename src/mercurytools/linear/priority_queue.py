@@ -8,17 +8,13 @@ class PriorityQueue:
         return len(self._data)
 
     def __repr__(self):
-        return f"PriorityQueue({[item[2] for item in self._data]})"
+        return f"{self.__class__.__name__}({[item[2] for item in self._data]})"
 
     def push(self,value,priority=None):
-        if priority is not None:
-            if self._uses_priority is False:
-                raise ValueError("cannot mix priority and non-priority values")
-            self._uses_priority=True
-        else:
-            if self._uses_priority is True:
-                raise ValueError("cannot mix priority and non-priority values")
-            self._uses_priority=False
+        if self._uses_priority is None:
+            self._uses_priority=priority is not None
+        elif (priority is not None)!=self._uses_priority:
+            raise ValueError("cannot mix priority and non-priority values")
         if priority is None:
             entry=(value,self._counter,value)
         else:
@@ -63,7 +59,7 @@ class PriorityQueue:
         while i>0:
             p=self._parent(i)
             try:
-                if self._data[i]<self._data[p]:
+                if (self._data[i][0],self._data[i][1])<(self._data[p][0],self._data[p][1]):
                     self._swap(i,p)
                     i=p
                 else:
@@ -78,9 +74,9 @@ class PriorityQueue:
             right=self._right(i)
             smallest=i
             try:
-                if left<size and self._data[left]<self._data[smallest]:
+                if left<size and (self._data[left][0],self._data[left][1])<(self._data[smallest][0],self._data[smallest][1]):
                     smallest=left
-                if right<size and self._data[right]<self._data[smallest]:
+                if right<size and (self._data[right][0],self._data[right][1])<(self._data[smallest][0],self._data[smallest][1]):
                     smallest=right
             except TypeError:
                 raise TypeError("values are not comparable for priority queue")
