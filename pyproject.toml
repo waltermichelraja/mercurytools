@@ -7,14 +7,17 @@ name="mercurytools"
 dynamic=["version"]
 description="a lightweight and consistent data structures library"
 readme="README.md"
-license="MIT"
-license-files=["LICENSE"]
-authors=[{name="Walter Michel Raja"}]
+license={file="LICENSE"}
+authors=[{name="Walter Michel Raja",email="waltermichelraja@gmail.com"}]
 maintainers=[{name="Walter Michel Raja",email="waltermichelraja@gmail.com"}]
 classifiers=[
   "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent"
 ]
+
+[project.urls]
+Homepage="https://github.com/waltermichelraja/mercurytools"
 
 [project.scripts]
 mercurytools="mercurytools.cli.main:main"
