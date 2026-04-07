@@ -66,6 +66,15 @@ class TreeBase(InternalStateGuard):
             if current.right:
                 q.append(current.right)
 
+    def min(self):
+        if self._size==0:
+            return None
+        return min(self)
+
+    def max(self):
+        if self._size==0:
+            return None
+        return max(self)
 
     def height(self):
         def _height(node):

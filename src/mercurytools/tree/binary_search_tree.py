@@ -32,7 +32,7 @@ class BinarySearchTree(TreeBase):
             return node.left,True
         successor=self._min_node(node.right)
         node.data=successor.data
-        node.right,_=self._remove(node.right,successor.data)
+        node.right,deleted=self._remove(node.right,successor.data)
         return node,True
 
     def _min_node(self,node):
