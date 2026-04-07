@@ -24,12 +24,13 @@ class LRUNode:
 
 
 class BinaryTreeNode:
-    __slots__=("data","left","right")
+    __slots__=("data","left","right","height")
 
     def __init__(self,data):
         self.data=data
         self.left=None
         self.right=None
+        self.height=1
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.data})"
