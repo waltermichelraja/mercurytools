@@ -15,15 +15,19 @@ pytest
 ```
 
 ## overview
-| structure          | operations                                                                           |
-| :----------------- | :----------------------------------------------------------------------------------- |
-| LinkedList         | `append`, `prepend`, `insert`, `remove`, `pop`                                             |
-| Stack              | `push`, `pop`, `peek`                                                                      |
-| Deque              | `append`, `appendleft`, `pop`, `popleft`                                                   |
-| PriorityQueue      | `push`, `pop`, `peek`, `to_list`                                                           |
-| LRUCache           | `get`, `put`, `clear`, `keys`, `values`                                                    |
-| utilities [linear] | `extend`, `reverse`, `clear`, `copy`, `to_list`                                            |
-| special methods    | `__len__`, `__iter__`, `__reversed__`, `__getitem__`, `__contains__`, `__eq__`, `__repr__` |
+| structure          | operations                                                                       |
+| :----------------- | :------------------------------------------------------------------------------- |
+| LinkedList         | `append`, `prepend`, `insert`, `remove`, `pop`                                   |
+| Stack              | `push`, `pop`, `peek`                                                            |
+| Deque              | `append`, `appendleft`, `pop`, `popleft`                                         |
+| PriorityQueue      | `push`, `pop`, `peek`, `to_list`                                                 |
+| LRUCache           | `get`, `put`, `clear`, `keys`, `values`                                          |
+| utilities [`linear`] | `extend`, `reverse`, `clear`, `copy`, `to_list`                                |
+| BinaryTree         | `insert`                                                                         |
+| BinarySearchTree   | `insert`, `remove`                                                               |
+| AVLTree            | `insert`, `remove`                                                               |
+| utilities [`tree`]   | `inorder`, `preorder`, `postorder`, `level_order`, `min`, `max`, `height`, `clear`         |
+| special methods    | `__len__`, `__iter__`, `__reversed__`, `__getitem__`, `__contains__`, `__eq__`, `__repr__`   |
 
 <br>
 
