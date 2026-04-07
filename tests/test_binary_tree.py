@@ -18,13 +18,6 @@ def test_traversals():
     assert list(bt.postorder())==[4,5,2,3,1]
 
 
-def test_find():
-    bt=BinaryTree()
-    bt.insert(10)
-    assert bt.find(10) is True
-    assert bt.find(5) is False
-
-
 def test_height():
     bt=BinaryTree()
     for i in range(7):

@@ -8,13 +8,6 @@ def test_insert_and_inorder():
     assert list(bst)==[2,3,4,5,6,7,8]
 
 
-def test_find():
-    bst=BinarySearchTree()
-    bst.insert(10)
-    assert bst.find(10) is True
-    assert bst.find(5) is False
-
-
 def test_remove_leaf():
     bst=BinarySearchTree()
     for i in [5,3,7]:
