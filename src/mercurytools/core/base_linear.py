@@ -1,5 +1,6 @@
 from .base import InternalStateGuard
 from .nodes import LinearNode as Node
+from .exceptions import EmptyStructureError,IndexOutOfBoundsError
 
 
 class LinearBase(InternalStateGuard):
@@ -54,7 +55,7 @@ class LinearBase(InternalStateGuard):
         if index<0:
             index=self._size+index
         if index<0 or index>=self._size:
-            raise IndexError("index out of bounds")
+            raise IndexOutOfBoundsError()
         return self._node_at(index).data
 
 
@@ -74,11 +75,11 @@ class LinearBase(InternalStateGuard):
 
     def pop(self,index=-1):
         if self._size==0:
-            raise IndexError("pop from empty structure")
+            raise EmptyStructureError("pop from empty structure")
         if index<0:
             index=self._size+index
         if index<0 or index>=self._size:
-            raise IndexError("index out of bounds")
+            raise IndexOutOfBoundsError()
         node=self._node_at(index)
         return self._remove_node(node)
 

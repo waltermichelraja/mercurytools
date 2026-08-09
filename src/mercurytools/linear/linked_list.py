@@ -1,6 +1,6 @@
 from ..core.base_linear import LinearBase
 from ..core.nodes import LinearNode as Node
-from ..core.exceptions import IndexOutOfBoundsError
+from ..core.exceptions import IndexOutOfBoundsError,ValueNotFoundError
 
 
 class LinkedList(LinearBase):
@@ -35,4 +35,4 @@ class LinkedList(LinearBase):
             if current.data==value:
                 return self._remove_node(current)
             current=current.next
-        raise ValueError(f"{value} not found")
+        raise ValueNotFoundError(f"{value} not found")

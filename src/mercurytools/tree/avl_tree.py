@@ -1,5 +1,6 @@
 from ..core.base_tree import TreeBase
 from ..core.nodes import BinaryTreeNode as Node
+from ..core.exceptions import ValueNotFoundError
 
 
 class AVLTree(TreeBase):
@@ -36,7 +37,7 @@ class AVLTree(TreeBase):
         if deleted:
             self._set_size(self._size-1)
             return value
-        raise ValueError(f"{value} not found")
+        raise ValueNotFoundError(f"{value} not found")
 
     def _remove(self,node,value):
         if not node:
