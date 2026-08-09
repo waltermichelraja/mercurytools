@@ -3,11 +3,12 @@ from .nodes import LinearNode as Node
 
 
 class LinearBase(InternalStateGuard):
-    _protected_fields={"_head","_tail","_size"}
+    _protected_fields=frozenset({"_head","_tail","_size"})
+
     def __init__(self):
-        self._head=None
-        self._tail=None
-        self._size=0
+        object.__setattr__(self,"_head",None)
+        object.__setattr__(self,"_tail",None)
+        object.__setattr__(self,"_size",0)
 
     @property
     def head(self):
@@ -94,9 +95,9 @@ class LinearBase(InternalStateGuard):
 
 
     def clear(self):
-        self._head=None
-        self._tail=None
-        self._size=0
+        object.__setattr__(self,"_head",None)
+        object.__setattr__(self,"_tail",None)
+        object.__setattr__(self,"_size",0)
 
     def to_list(self):
         return list(self)
@@ -109,38 +110,44 @@ class LinearBase(InternalStateGuard):
 
     def reverse(self):
         current=self._head
-        self._head,self._tail=self._tail,self._head
+        object.__setattr__(self,"_head",self._tail)
+        object.__setattr__(self,"_tail",current)
         while current:
             current.next,current.prev=current.prev,current.next
             current=current.prev
 
+    def _set_size(self,value):
+        object.__setattr__(self,"_size",value)
+
 
     def _append_node(self,node:Node):
         if not self._head:
-            self._head=self._tail=node
+            object.__setattr__(self,"_head",node)
+            object.__setattr__(self,"_tail",node)
         else:
             node.prev=self._tail
             self._tail.next=node
-            self._tail=node
-        self._size+=1
+            object.__setattr__(self,"_tail",node)
+        self._set_size(self._size+1)
 
     def _prepend_node(self,node:Node):
         if not self._head:
-            self._head=self._tail=node
+            object.__setattr__(self,"_head",node)
+            object.__setattr__(self,"_tail",node)
         else:
             node.next=self._head
             self._head.prev=node
-            self._head=node
-        self._size+=1
+            object.__setattr__(self,"_head",node)
+        self._set_size(self._size+1)
 
     def _remove_node(self,node:Node):
         if node.prev:
             node.prev.next=node.next
         else:
-            self._head=node.next
+            object.__setattr__(self,"_head",node.next)
         if node.next:
             node.next.prev=node.prev
         else:
-            self._tail=node.prev
-        self._size-=1
+            object.__setattr__(self,"_tail",node.prev)
+        self._set_size(self._size-1)
         return node.data

@@ -27,7 +27,7 @@ class LinkedList(LinearBase):
         node.next=current
         current.prev.next=node
         current.prev=node
-        self._size+=1
+        self._set_size(self._size+1)
 
     def remove(self,value):
         current=self._head

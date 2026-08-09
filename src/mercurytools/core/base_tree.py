@@ -4,10 +4,11 @@ from .base import InternalStateGuard
 
 
 class TreeBase(InternalStateGuard):
-    _protected_fields={"_root","_size"}
+    _protected_fields=frozenset({"_root","_size"})
+
     def __init__(self):
-        self._root=None
-        self._size=0
+        object.__setattr__(self,"_root",None)
+        object.__setattr__(self,"_size",0)
 
     @property
     def size(self):
@@ -84,5 +85,11 @@ class TreeBase(InternalStateGuard):
         return _height(self._root)
 
     def clear(self):
-        self._root=None
-        self._size=0
+        object.__setattr__(self,"_root",None)
+        object.__setattr__(self,"_size",0)
+
+    def _set_root(self,node):
+        object.__setattr__(self,"_root",node)
+
+    def _set_size(self,value):
+        object.__setattr__(self,"_size",value)
