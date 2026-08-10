@@ -1,3 +1,6 @@
+from ..core.exceptions import EmptyStructureError
+
+
 class PriorityQueue:
     def __init__(self):
         self._data=[]
@@ -25,7 +28,7 @@ class PriorityQueue:
 
     def pop(self):
         if not self._data:
-            raise IndexError("pop from empty priority queue")
+            raise EmptyStructureError("pop from empty priority queue")
         self._swap(0,len(self._data)-1)
         _,_,value=self._data.pop()
         self._heapify_down(0)

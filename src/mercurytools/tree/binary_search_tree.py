@@ -1,5 +1,6 @@
 from ..core.base_tree import TreeBase
 from ..core.nodes import BinaryTreeNode as Node
+from ..core.exceptions import ValueNotFoundError
 
 
 class BinarySearchTree(TreeBase):
@@ -43,8 +44,8 @@ class BinarySearchTree(TreeBase):
 
     def insert(self,data):
         if not self._root:
-            self._root=Node(data)
-            self._size+=1
+            self._set_root(Node(data))
+            self._set_size(self._size+1)
             return
         current=self._root
         while True:
@@ -53,24 +54,25 @@ class BinarySearchTree(TreeBase):
                     current=current.left
                 else:
                     current.left=Node(data)
-                    self._size+=1
+                    self._set_size(self._size+1)
                     return
             elif data>current.data:
                 if current.right:
                     current=current.right
                 else:
                     current.right=Node(data)
-                    self._size+=1
+                    self._set_size(self._size+1)
                     return
             else:
                 return
 
     def remove(self,value):
-        self._root,deleted=self._remove(self._root,value)
+        new_root,deleted=self._remove(self._root,value)
+        self._set_root(new_root)
         if deleted:
-            self._size-=1
+            self._set_size(self._size-1)
             return value
-        raise ValueError(f"{value} not found")
+        raise ValueNotFoundError(f"{value} not found")
 
     def min(self):
         if not self._root:

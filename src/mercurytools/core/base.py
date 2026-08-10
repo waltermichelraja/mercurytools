@@ -1,12 +1,7 @@
-import inspect
-
 class InternalStateGuard:
-    _protected_fields=set()
+    _protected_fields=frozenset()
 
     def __setattr__(self,name,value):
         if name in self._protected_fields:
-            if hasattr(self,name):
-                caller=inspect.currentframe().f_back.f_globals.get("__name__")
-                if not (caller and caller.startswith("mercurytools")):
-                    raise AttributeError(f"{name} is read-only")
+            raise AttributeError(f"'{name}' is read-only; mutate via the public API")
         object.__setattr__(self,name,value)
