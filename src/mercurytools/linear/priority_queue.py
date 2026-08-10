@@ -13,6 +13,22 @@ class PriorityQueue:
     def __repr__(self):
         return f"{self.__class__.__name__}({[item[2] for item in self._data]})"
 
+    def __iter__(self):
+        for item in self._data:
+            yield item[2]
+
+    def __contains__(self,value):
+        return any(item[2]==value for item in self._data)
+
+    def __eq__(self,other):
+        if not isinstance(other,PriorityQueue):
+            return False
+        if len(self)!=len(other):
+            return False
+        self_sorted=sorted(self._data,key=lambda item:(item[0],item[1]))
+        other_sorted=sorted(other._data,key=lambda item:(item[0],item[1]))
+        return [item[2] for item in self_sorted]==[item[2] for item in other_sorted]
+
     def push(self,value,priority=None):
         if self._uses_priority is None:
             self._uses_priority=priority is not None
@@ -41,6 +57,18 @@ class PriorityQueue:
 
     def to_list(self):
         return [item[2] for item in self._data]
+
+    def clear(self):
+        self._data=[]
+        self._uses_priority=None
+        self._counter=0
+
+    def copy(self):
+        new=PriorityQueue()
+        new._data=list(self._data)
+        new._uses_priority=self._uses_priority
+        new._counter=self._counter
+        return new
 
 
     def _priority(self,item):
