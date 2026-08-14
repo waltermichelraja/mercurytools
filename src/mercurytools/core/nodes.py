@@ -1,4 +1,8 @@
+"""internal node types backing the linear and tree structures."""
+
+
 class LinearNode:
+    """a doubly-linked node used by LinearBase-derived structures [LinkedList, Stack, Deque]."""
     __slots__=("data","next","prev")
 
     def __init__(self,data):
@@ -11,6 +15,7 @@ class LinearNode:
 
 
 class LRUNode:
+    """a doubly-linked key/value node used internally by LRUCache."""
     __slots__=("key","value","prev","next")
 
     def __init__(self,key,value):
@@ -24,6 +29,7 @@ class LRUNode:
 
 
 class BinaryTreeNode:
+    """a binary tree node used by BinaryTree, BinarySearchTree, and AVLTree."""
     __slots__=("data","left","right","height")
 
     def __init__(self,data):
