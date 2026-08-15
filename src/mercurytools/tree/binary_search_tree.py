@@ -1,10 +1,20 @@
+"""unbalanced binary search tree."""
+
+
 from ..core.base_tree import TreeBase
 from ..core.nodes import BinaryTreeNode as Node
 from ..core.exceptions import ValueNotFoundError
 
 
 class BinarySearchTree(TreeBase):
+    """a classic [unbalanced] binary search tree.
+    insert/remove/__contains__ are O(h) where h is the tree's height --
+    O(log n) on average, but O(n) in the worst case for adversarial or
+    already-sorted insertion order.
+    """
+
     def __contains__(self,value):
+        """return True if value is present: O(h)."""
         current=self._root
         while current:
             if value<current.data:
@@ -17,6 +27,9 @@ class BinarySearchTree(TreeBase):
 
 
     def _remove(self,node,value):
+        """recursively remove value from the subtree rooted at node.
+        returns [new_subtree_root, was_deleted].
+        """
         if not node:
             return node,False
         if value<node.data:
@@ -37,12 +50,14 @@ class BinarySearchTree(TreeBase):
         return node,True
 
     def _min_node(self,node):
+        """return the leftmost [smallest] node in the subtree rooted at node."""
         while node.left:
             node=node.left
         return node
 
 
     def insert(self,data):
+        """insert data, maintaining BST ordering. Duplicate values are ignored: O(h)."""
         if not self._root:
             self._set_root(Node(data))
             self._set_size(self._size+1)
@@ -67,6 +82,7 @@ class BinarySearchTree(TreeBase):
                 return
 
     def remove(self,value):
+        """remove and return value: O(h)."""
         new_root,deleted=self._remove(self._root,value)
         self._set_root(new_root)
         if deleted:
@@ -75,6 +91,7 @@ class BinarySearchTree(TreeBase):
         raise ValueNotFoundError(f"{value} not found")
 
     def min(self):
+        """return the smallest value, or None if empty: O(h)."""
         if not self._root:
             return None
         node=self._root
@@ -83,6 +100,7 @@ class BinarySearchTree(TreeBase):
         return node.data
 
     def max(self):
+        """return the largest value, or None if empty: O(h)."""
         if not self._root:
             return None
         node=self._root
