@@ -1,8 +1,18 @@
+"""fixed-capacity LRU [least-recently-used] cache."""
+
+
 from ..core.nodes import LRUNode as Node
 
 
 class LRUCache:
+    """a fixed-capacity key/value cache that evicts the least recently used entry.
+    both get() and put() count as "use" and move the entry to the front.
+    Backed by a hash map [O(1) lookup] plus a doubly-linked list [O(1)
+    reordering and eviction].
+    """
+
     def __init__(self,capacity:int):
+        """create a cache holding at most capacity entries."""
         if capacity<=0:
             raise ValueError("capacity must be greater than 0")
         self._capacity=capacity
@@ -23,6 +33,7 @@ class LRUCache:
 
 
     def get(self,key):
+        """return the value for key and mark it most recently used, or None if absent: O(1)."""
         node=self._map.get(key)
         if not node:
             return None
@@ -30,6 +41,10 @@ class LRUCache:
         return node.value
 
     def put(self,key,value):
+        """insert or update key with value, marking it most recently used.
+        if this insertion exceeds capacity, the least recently used
+        entry is evicted: O(1).
+        """
         node=self._map.get(key)
         if node:
             node.value=value
@@ -42,17 +57,20 @@ class LRUCache:
             self._evict()
 
     def clear(self):
+        """remove all entries."""
         self._map.clear()
         self._head=None
         self._tail=None
 
     def keys(self):
+        """yield keys from most to least recently used."""
         current=self._head
         while current:
             yield current.key
             current=current.next
 
     def values(self):
+        """yield values from most to least recently used."""
         current=self._head
         while current:
             yield current.value
@@ -60,6 +78,7 @@ class LRUCache:
 
 
     def _add_to_head(self,node):
+        """insert node at the front [most recently used position]: O(1)."""
         node.prev=None
         node.next=self._head
         if self._head:
@@ -69,6 +88,7 @@ class LRUCache:
             self._tail=node
 
     def _remove_node(self,node):
+        """unlink node from the list without touching the key map: O(1)."""
         if node.prev:
             node.prev.next=node.next
         else:
@@ -79,10 +99,12 @@ class LRUCache:
             self._tail=node.prev
 
     def _move_to_head(self,node):
+        """move an already-linked node to the front: O(1)."""
         self._remove_node(node)
         self._add_to_head(node)
 
     def _evict(self):
+        """remove the least recently used entry (the tail) from both the list and the map: O(1)."""
         if not self._tail:
             return
         key=self._tail.key

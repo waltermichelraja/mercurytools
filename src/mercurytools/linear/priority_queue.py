@@ -1,7 +1,19 @@
+"""binary min-heap priority queue, with an optional FIFO fallback mode."""
+
+
 from ..core.exceptions import EmptyStructureError
 
 
 class PriorityQueue:
+    """a binary min-heap that pops the lowest-priority value first.
+
+    a single instance cannot mix priority andnon-priority pushes 
+    -- whichever style is used first locks in the mode 
+    for that instance's lifetime [until clear()].
+    ties [equal priority] are broken by insertion order [FIFO], so the
+    queue is stable.
+    """
+
     def __init__(self):
         self._data=[]
         self._uses_priority=None
@@ -14,13 +26,19 @@ class PriorityQueue:
         return f"{self.__class__.__name__}({[item[2] for item in self._data]})"
 
     def __iter__(self):
+        """iterate over stored values in raw heap-array order [not priority order]."""
         for item in self._data:
             yield item[2]
 
     def __contains__(self,value):
+        """return True if value is present, using == comparison: O(n)."""
         return any(item[2]==value for item in self._data)
 
     def __eq__(self,other):
+        """two queues are equal if they'd pop in the same value sequence.
+        compares both queues sorted by [priority, insertion order], so
+        equal contents pushed in a different order still compare equal.
+        """
         if not isinstance(other,PriorityQueue):
             return False
         if len(self)!=len(other):
@@ -30,6 +48,7 @@ class PriorityQueue:
         return [item[2] for item in self_sorted]==[item[2] for item in other_sorted]
 
     def push(self,value,priority=None):
+        """push value with an optional priority [lower pops first]: O(log n)."""
         if self._uses_priority is None:
             self._uses_priority=priority is not None
         elif (priority is not None)!=self._uses_priority:
@@ -43,6 +62,7 @@ class PriorityQueue:
         self._heapify_up(len(self._data)-1)
 
     def pop(self):
+        """remove and return the lowest-priority value."""
         if not self._data:
             raise EmptyStructureError("pop from empty priority queue")
         self._swap(0,len(self._data)-1)
@@ -51,19 +71,23 @@ class PriorityQueue:
         return value
 
     def peek(self):
+        """return the lowest-priority value without removing it, or None if empty: O(1)."""
         if not self._data:
             return None
         return self._data[0][2]
 
     def to_list(self):
+        """return stored values as a plain list, in raw heap-array order [not priority order]."""
         return [item[2] for item in self._data]
 
     def clear(self):
+        """remove all elements and reset priority mode, so push() can be used in either mode again."""
         self._data=[]
         self._uses_priority=None
         self._counter=0
 
     def copy(self):
+        """return a new, independent queue with the same contents and priority mode."""
         new=PriorityQueue()
         new._data=list(self._data)
         new._uses_priority=self._uses_priority
@@ -87,6 +111,7 @@ class PriorityQueue:
         self._data[i],self._data[j]=self._data[j],self._data[i]
 
     def _heapify_up(self,i):
+        """restore the heap property by bubbling the item at index i upward."""
         while i>0:
             p=self._parent(i)
             try:
@@ -99,6 +124,7 @@ class PriorityQueue:
                 raise TypeError("values are not comparable for priority queue")
 
     def _heapify_down(self,i):
+        """restore the heap property by sinking the item at index i downward."""
         size=len(self._data)
         while True:
             left=self._left(i)
