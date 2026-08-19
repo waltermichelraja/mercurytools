@@ -1,19 +1,25 @@
 """unbalanced binary search tree."""
 
 
+from __future__ import annotations
+from typing import Optional, Tuple, TypeVar
+
 from ..core.base_tree import TreeBase
 from ..core.nodes import BinaryTreeNode as Node
 from ..core.exceptions import ValueNotFoundError
+from ..core.comparable import Comparable
+
+T=TypeVar("T",bound=Comparable)
 
 
-class BinarySearchTree(TreeBase):
+class BinarySearchTree(TreeBase[T]):
     """a classic [unbalanced] binary search tree.
     insert/remove/__contains__ are O(h) where h is the tree's height --
     O(log n) on average, but O(n) in the worst case for adversarial or
     already-sorted insertion order.
     """
 
-    def __contains__(self,value):
+    def __contains__(self,value:T) -> bool:
         """return True if value is present: O(h)."""
         current=self._root
         while current:
@@ -26,7 +32,7 @@ class BinarySearchTree(TreeBase):
         return False
 
 
-    def _remove(self,node,value):
+    def _remove(self,node:Optional[Node[T]],value:T) -> Tuple[Optional[Node[T]],bool]:
         """recursively remove value from the subtree rooted at node.
         returns [new_subtree_root, was_deleted].
         """
@@ -49,14 +55,14 @@ class BinarySearchTree(TreeBase):
         node.right,deleted=self._remove(node.right,successor.data)
         return node,True
 
-    def _min_node(self,node):
+    def _min_node(self,node:Node[T]) -> Node[T]:
         """return the leftmost [smallest] node in the subtree rooted at node."""
         while node.left:
             node=node.left
         return node
 
 
-    def insert(self,data):
+    def insert(self,data:T) -> None:
         """insert data, maintaining BST ordering. Duplicate values are ignored: O(h)."""
         if not self._root:
             self._set_root(Node(data))
@@ -81,7 +87,7 @@ class BinarySearchTree(TreeBase):
             else:
                 return
 
-    def remove(self,value):
+    def remove(self,value:T) -> T:
         """remove and return value: O(h)."""
         new_root,deleted=self._remove(self._root,value)
         self._set_root(new_root)
@@ -90,7 +96,7 @@ class BinarySearchTree(TreeBase):
             return value
         raise ValueNotFoundError(f"{value} not found")
 
-    def min(self):
+    def min(self) -> Optional[T]:
         """return the smallest value, or None if empty: O(h)."""
         if not self._root:
             return None
@@ -99,7 +105,7 @@ class BinarySearchTree(TreeBase):
             node=node.left
         return node.data
 
-    def max(self):
+    def max(self) -> Optional[T]:
         """return the largest value, or None if empty: O(h)."""
         if not self._root:
             return None

@@ -1,76 +1,83 @@
 """shared base class for binary tree structures [BinaryTree, BinarySearchTree, AVLTree]."""
 
 
+from __future__ import annotations
 from collections import deque
+from typing import Generic, Iterator, Optional, TypeVar
 
 from .base import InternalStateGuard
+from .nodes import BinaryTreeNode as Node
+
+T=TypeVar("T")
 
 
-class TreeBase(InternalStateGuard):
+class TreeBase(InternalStateGuard,Generic[T]):
     """common state and traversal methods shared by all binary tree types."""
     _protected_fields=frozenset({"_root","_size"})
+    _root:Optional[Node[T]]
+    _size:int
 
-    def __init__(self):
+    def __init__(self) -> None:
         object.__setattr__(self,"_root",None)
         object.__setattr__(self,"_size",0)
 
     @property
-    def size(self):
+    def size(self) -> int:
         """number of elements currently stored."""
         return self._size
 
     @property
-    def root(self):
+    def root(self) -> Optional[Node[T]]:
         """the root node, or None if the tree is empty."""
         return self._root
     
-    def __contains__(self,value):
+    def __contains__(self,value:T) -> bool:
         """return True if value is present: O(n) here; 
         overridden with O(h) in ordered trees.
         """
         return any(item==value for item in self)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[T]:
         """iterate over stored values in-order [left, node, right]: O(n) here; 
         overridden with O(h) in ordered trees.
         """
         return self.inorder()
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self._size
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({list(self.inorder())})"
     
 
-    def inorder(self):
+    def inorder(self) -> Iterator[T]:
         """yield values in-order: left subtree, node, right subtree."""
-        def _in(node):
+        def _in(node:Optional[Node[T]]) -> Iterator[T]:
             if node:
                 yield from _in(node.left)
                 yield node.data
                 yield from _in(node.right)
         return _in(self._root)
 
-    def preorder(self):
+    def preorder(self) -> Iterator[T]:
         """yield values pre-order: node, left subtree, right subtree."""
-        def _pre(node):
+        def _pre(node:Optional[Node[T]]) -> Iterator[T]:
             if node:
                 yield node.data
                 yield from _pre(node.left)
                 yield from _pre(node.right)
         return _pre(self._root)
 
-    def postorder(self):
+    def postorder(self) -> Iterator[T]:
         """yield values post-order: left subtree, right subtree, node."""
-        def _post(node):
+        def _post(node:Optional[Node[T]]) -> Iterator[T]:
             if node:
                 yield from _post(node.left)
                 yield from _post(node.right)
                 yield node.data
         return _post(self._root)
     
-    def level_order(self):
+    def level_order(self) -> Iterator[T]:
         """yield values breadth-first, level by level, top to bottom."""
         if not self._root:
             return
@@ -83,38 +90,38 @@ class TreeBase(InternalStateGuard):
             if current.right:
                 q.append(current.right)
 
-    def min(self):
+    def min(self) -> Optional[T]:
         """return the smallest value in the tree, or None if empty: O(n) here."""
         if self._size==0:
             return None
-        return min(self)
+        return min(self)  # type: ignore[type-var]
 
-    def max(self):
+    def max(self) -> Optional[T]:
         """return the largest value in the tree, or None if empty: O(n) here."""
         if self._size==0:
             return None
-        return max(self)
+        return max(self)  # type: ignore[type-var]
 
-    def height(self):
+    def height(self) -> int:
         """return the tree's height 
         -- an empty tree has height -1, a single node has height 0: O(n) here; 
         overridden with O(h) in ordered trees.
         """
-        def _height(node):
+        def _height(node:Optional[Node[T]]) -> int:
             if not node:
                 return -1
             return 1+max(_height(node.left),_height(node.right))
         return _height(self._root)
 
-    def clear(self):
+    def clear(self) -> None:
         """remove all elements"""
         object.__setattr__(self,"_root",None)
         object.__setattr__(self,"_size",0)
 
-    def _set_root(self,node):
+    def _set_root(self,node:Optional[Node[T]]) -> None:
         """set _root, bypassing the InternalStateGuard write-protection."""
         object.__setattr__(self,"_root",node)
 
-    def _set_size(self,value):
+    def _set_size(self,value:int) -> None:
         """set _size, bypassing the InternalStateGuard write-protection."""
         object.__setattr__(self,"_size",value)

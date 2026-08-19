@@ -1,19 +1,23 @@
 """unordered binary tree with level-order [complete-tree] insertion."""
 
 
+from __future__ import annotations
 from collections import deque
+from typing import TypeVar
 
 from ..core.nodes import BinaryTreeNode as Node
 from ..core.base_tree import TreeBase
 
+T=TypeVar("T")
 
-class BinaryTree(TreeBase):
+
+class BinaryTree(TreeBase[T]):
     """a generic binary tree with no ordering guarantee between parent and children.
     insert() always fills the first available slot in level order 
     [i.e. keeps the tree "complete"].
     """
 
-    def insert(self,data):
+    def insert(self,data:T) -> None:
         """insert data into the first open slot found in level [breadth-first] order. O(n)."""
         new_node=Node(data)
         if not self._root:

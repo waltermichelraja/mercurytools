@@ -1,32 +1,37 @@
 """double-ended queue backed by a doubly-linked list."""
 
 
+from __future__ import annotations
+from typing import TypeVar
+
 from ..core.base_linear import LinearBase
 from ..core.nodes import LinearNode as Node
 from ..core.exceptions import EmptyStructureError
 
+T=TypeVar("T")
 
-class Deque(LinearBase):
+
+class Deque(LinearBase[T]):
     """a double-ended queue with O(1) push/pop from either end.
     note: this overrides pop() with a no-argument version, which
     shadows LinearBase's indexed pop(index=-1).
     """
 
-    def append(self,data):
+    def append(self,data:T) -> None:
         """add data to the right end: O(1)."""
         self._append_node(Node(data))
 
-    def appendleft(self,data):
+    def appendleft(self,data:T) -> None:
         """add data to the left end: O(1)."""
         self._prepend_node(Node(data))
 
-    def pop(self):
+    def pop(self) -> T:  # type: ignore[override]
         """remove and return the rightmost element: O(1)."""
         if not self._tail:
             raise EmptyStructureError("pop from empty deque")
         return self._remove_node(self._tail)
 
-    def popleft(self):
+    def popleft(self) -> T:
         """remove and return the leftmost element: O(1)."""
         if not self._head:
             raise EmptyStructureError("pop from empty deque")
