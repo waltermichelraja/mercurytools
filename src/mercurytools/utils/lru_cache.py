@@ -37,6 +37,28 @@ class LRUCache(Generic[K,V]):
             current=current.next
         return f"LRUCache({items})"
 
+    def __contains__(self,key:K) -> bool:
+        """return True if key is present: O(1). does not affect recency."""
+        return key in self._map
+
+    def __iter__(self) -> Iterator[K]:
+        """iterate over keys from most to least recently used. does not affect recency."""
+        return self.keys()
+
+    def __getitem__(self,key:K) -> V:
+        """return the value for key via cache[key], marking it most recently used: O(1).
+        raises KeyError if key is absent [unlike get(), which returns None].
+        """
+        node=self._map.get(key)
+        if node is None:
+            raise KeyError(key)
+        self._move_to_head(node)
+        return node.value
+
+    def __setitem__(self,key:K,value:V) -> None:
+        """insert or update key with value via cache[key]=value: sugar for put()."""
+        self.put(key,value)
+
 
     def get(self,key:K) -> Optional[V]:
         """return the value for key and mark it most recently used, or None if absent: O(1)."""
