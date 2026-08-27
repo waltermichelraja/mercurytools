@@ -2,7 +2,7 @@
 
 submodules:
     linear -- LinkedList, Stack, Deque, PriorityQueue
-    tree   -- BinaryTree, BinarySearchTree, AVLTree
+    tree   -- BinaryTree, BinarySearchTree, AVLTree, Trie
     utils  -- LRUCache
 """
 
