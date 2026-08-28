@@ -2,7 +2,7 @@
 
 
 from __future__ import annotations
-from typing import Generic, Optional, TypeVar
+from typing import Dict, Generic, Optional, TypeVar
 
 T=TypeVar("T")
 K=TypeVar("K")
@@ -48,3 +48,15 @@ class BinaryTreeNode(Generic[T]):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.data})"
+
+
+class TrieNode:
+    """a node in a Trie, mapping single characters to child nodes."""
+    __slots__=("children","is_end")
+
+    def __init__(self) -> None:
+        self.children:Dict[str,TrieNode]={}
+        self.is_end:bool=False
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(is_end={self.is_end}, children={list(self.children)})"
