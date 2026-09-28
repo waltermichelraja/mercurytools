@@ -69,3 +69,33 @@ def test_pop_index():
     ll.extend([1,2,3])
     assert ll.pop(1)==2
     assert ll.to_list()==[1,3]
+
+def test_slice_positive_step():
+    ll=LinkedList()
+    ll.extend([0,1,2,3,4,5])
+    assert ll[1:5:2].to_list()==[1,3]
+    assert ll[:3].to_list()==[0,1,2]
+
+
+def test_slice_negative_step_reverses():
+    ll=LinkedList()
+    ll.extend([1,2,3])
+    assert ll[::-1].to_list()==[3,2,1]
+    assert ll[::-2].to_list()==[3,1]
+    assert ll[2:0:-1].to_list()==[3,2]
+
+
+def test_slice_matches_builtin_list_semantics():
+    data=list(range(10))
+    ll=LinkedList()
+    ll.extend(data)
+    for s in [slice(None,None,-1),slice(7,2,-2),slice(-1,None,-3),slice(2,8,3),slice(20,30),slice(None,None,None)]:
+        assert ll[s].to_list()==data[s]
+
+
+def test_slice_returns_independent_copy():
+    ll=LinkedList()
+    ll.extend([1,2,3])
+    sliced=ll[::-1]
+    sliced.append(99)
+    assert ll.to_list()==[1,2,3]

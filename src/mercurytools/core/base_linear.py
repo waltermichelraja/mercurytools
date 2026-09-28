@@ -80,14 +80,12 @@ class LinearBase(InternalStateGuard,Generic[T]):
 
 
     def _slice(self,s:slice) -> "LinearBase[T]":
-        """build a new instance of the same class from a slice of this one."""
-        start,stop,step=s.indices(self._size)
+        """build a new instance of the same class from a slice of this one.
+        supports any step, including negative steps: O(n).
+        """
         result=self.__class__()
-        i=0
-        for item in self:
-            if i>=start and i<stop and (i-start)%step==0:
-                result._append_node(Node(item))
-            i+=1
+        for item in list(self)[s]:
+            result._append_node(Node(item))
         return result
 
     def extend(self,iterable:Iterable[T]) -> None:
