@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 from collections import deque
-from typing import Generic, Iterator, Optional, TypeVar
+from typing import Generic, Iterator, List, Optional, TypeVar
 
 from .base import InternalStateGuard
 from .nodes import BinaryTreeNode as Node
@@ -51,32 +51,53 @@ class TreeBase(InternalStateGuard,Generic[T]):
     
 
     def inorder(self) -> Iterator[T]:
-        """yield values in-order: left subtree, node, right subtree."""
-        def _in(node:Optional[Node[T]]) -> Iterator[T]:
-            if node:
-                yield from _in(node.left)
-                yield node.data
-                yield from _in(node.right)
-        return _in(self._root)
+        """yield values in-order: left subtree, node, right subtree.
+        iterative [no recursion depth limit]: O(n) time, O(h) extra space.
+        """
+        stack:List[Node[T]]=[]
+        node=self._root
+        while stack or node:
+            while node:
+                stack.append(node)
+                node=node.left
+            node=stack.pop()
+            yield node.data
+            node=node.right
 
     def preorder(self) -> Iterator[T]:
-        """yield values pre-order: node, left subtree, right subtree."""
-        def _pre(node:Optional[Node[T]]) -> Iterator[T]:
-            if node:
-                yield node.data
-                yield from _pre(node.left)
-                yield from _pre(node.right)
-        return _pre(self._root)
+        """yield values pre-order: node, left subtree, right subtree.
+        iterative [no recursion depth limit]: O(n) time, O(h) extra space.
+        """
+        if not self._root:
+            return
+        stack:List[Node[T]]=[self._root]
+        while stack:
+            node=stack.pop()
+            yield node.data
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
 
     def postorder(self) -> Iterator[T]:
-        """yield values post-order: left subtree, right subtree, node."""
-        def _post(node:Optional[Node[T]]) -> Iterator[T]:
+        """yield values post-order: left subtree, right subtree, node.
+        iterative [no recursion depth limit]: O(n) time, O(h) extra space.
+        """
+        stack:List[Node[T]]=[]
+        node=self._root
+        last:Optional[Node[T]]=None
+        while stack or node:
             if node:
-                yield from _post(node.left)
-                yield from _post(node.right)
-                yield node.data
-        return _post(self._root)
-    
+                stack.append(node)
+                node=node.left
+                continue
+            top=stack[-1]
+            if top.right and last is not top.right:
+                node=top.right
+            else:
+                yield top.data
+                last=stack.pop()
+
     def level_order(self) -> Iterator[T]:
         """yield values breadth-first, level by level, top to bottom."""
         if not self._root:
@@ -103,15 +124,18 @@ class TreeBase(InternalStateGuard,Generic[T]):
         return max(self)  # type: ignore[type-var]
 
     def height(self) -> int:
-        """return the tree's height 
-        -- an empty tree has height -1, a single node has height 0: O(n) here; 
-        overridden with O(h) in ordered trees.
+        """return the tree's height
+        -- an empty tree has height -1, a single node has height 0.
+        iterative [no recursion depth limit]: O(n).
         """
-        def _height(node:Optional[Node[T]]) -> int:
-            if not node:
-                return -1
-            return 1+max(_height(node.left),_height(node.right))
-        return _height(self._root)
+        if not self._root:
+            return -1
+        level=[self._root]
+        height=-1
+        while level:
+            height+=1
+            level=[child for node in level for child in (node.left,node.right) if child]
+        return height
 
     def clear(self) -> None:
         """remove all elements"""
