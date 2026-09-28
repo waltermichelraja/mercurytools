@@ -63,8 +63,12 @@ class LinearBase(InternalStateGuard,Generic[T]):
         return any(item==value for item in self)
 
     def __eq__(self,other:object) -> bool:
-        """two instances are equal if they hold the same values in the same order."""
+        """two instances are equal if they are the same class and hold the
+        same values in the same order [so a LinkedList never equals a Stack].
+        """
         if not isinstance(other,LinearBase):
+            return NotImplemented
+        if type(self) is not type(other):
             return False
         return list(self)==list(other)
 
@@ -81,7 +85,7 @@ class LinearBase(InternalStateGuard,Generic[T]):
 
     def _slice(self,s:slice) -> "LinearBase[T]":
         """build a new instance of the same class from a slice of this one.
-        supports any step, including negative steps: O(n).
+        supports any step, including negative steps [e.g. `[::-1]`]: O(n).
         """
         result=self.__class__()
         for item in list(self)[s]:
