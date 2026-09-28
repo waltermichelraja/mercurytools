@@ -147,17 +147,21 @@ class Graph(Generic[V]):
                     queue.append(neighbor)
 
     def dfs(self,start:V) -> Iterator[V]:
-        """yield vertices reachable from start in depth-first order, each exactly once.
+        """yield vertices reachable from start in depth-first [pre-order], each exactly once.
+        neighbors are explored in insertion order, matching a recursive DFS.
         iterative [no recursion depth limit]: O(V + E).
         """
         if start not in self._adj:
             raise ValueNotFoundError(f"{start!r} not found")
         visited={start}
-        stack=[start]
+        yield start
+        stack=[iter(self._adj[start])]
         while stack:
-            current=stack.pop()
-            yield current
-            for neighbor in reversed(list(self._adj[current])):
+            for neighbor in stack[-1]:
                 if neighbor not in visited:
                     visited.add(neighbor)
-                    stack.append(neighbor)
+                    yield neighbor
+                    stack.append(iter(self._adj[neighbor]))
+                    break
+            else:
+                stack.pop()

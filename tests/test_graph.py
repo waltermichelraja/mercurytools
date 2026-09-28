@@ -212,3 +212,36 @@ def test_repr():
     g.add_vertex("a")
     r=repr(g)
     assert "undirected" in r and "a" in r
+
+def test_dfs_follows_true_depth_first_order():
+    # a recursive DFS visits c from b before returning to a's second neighbor
+    g=Graph(directed=True)
+    for u,v in [("a","b"),("a","c"),("b","c"),("b","d")]:
+        g.add_edge(u,v)
+    assert list(g.dfs("a"))==["a","b","c","d"]
+
+
+def test_dfs_matches_recursive_reference():
+    import random
+    rng=random.Random(7)
+    for _ in range(50):
+        g=Graph(directed=rng.random()<0.5)
+        for _ in range(rng.randint(1,25)):
+            g.add_edge(rng.randint(0,9),rng.randint(0,9))
+        start=next(iter(g))
+        seen,order=set(),[]
+        def rec(u):
+            seen.add(u)
+            order.append(u)
+            for n in g.neighbors(u):
+                if n not in seen:
+                    rec(n)
+        rec(start)
+        assert list(g.dfs(start))==order
+
+
+def test_dfs_handles_deep_graph_without_recursion_error():
+    g=Graph(directed=True)
+    for i in range(5000):
+        g.add_edge(i,i+1)
+    assert sum(1 for _ in g.dfs(0))==5001
