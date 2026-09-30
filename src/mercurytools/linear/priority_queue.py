@@ -11,7 +11,7 @@ T=TypeVar("T")
 
 class PriorityQueue(Generic[T]):
     """a binary min-heap that pops the lowest-priority value first.
-    a single instance cannot mix priority andnon-priority pushes 
+    a single instance cannot mix priority and non-priority pushes 
     -- whichever style is used first locks in the mode 
     for that instance's lifetime [until clear()].
     ties [equal priority] are broken by insertion order [FIFO], so the
@@ -52,18 +52,18 @@ class PriorityQueue(Generic[T]):
         return [item[2] for item in self_sorted]==[item[2] for item in other_sorted]
 
     def push(self,value:T,priority:Optional[Any]=None) -> None:
-        """push value with an optional priority [lower pops first]: O(log n)."""
+        """push value with an optional priority [lower pops first]: O(log n).
+        atomic: if priority can't be compared with the priorities already
+        stored, TypeError is raised and the queue is left unchanged.
+        """
+        if self._uses_priority is not None and (priority is not None)!=self._uses_priority:
+            raise ValueError("cannot mix priority and non-priority values")
+        entry:Tuple[Any,int,T]=(value if priority is None else priority,self._counter,value)
+        self._sift_up(entry)
+        # only commit state changes once the entry has been placed successfully
         if self._uses_priority is None:
             self._uses_priority=priority is not None
-        elif (priority is not None)!=self._uses_priority:
-            raise ValueError("cannot mix priority and non-priority values")
-        if priority is None:
-            entry=(value,self._counter,value)
-        else:
-            entry=(priority,self._counter,value)
         self._counter+=1
-        self._data.append(entry)
-        self._heapify_up(len(self._data)-1)
 
     def pop(self) -> T:
         """remove and return the lowest-priority value."""
@@ -99,9 +99,6 @@ class PriorityQueue(Generic[T]):
         return new
 
 
-    def _priority(self,item:Tuple[Any,int,T]) -> Any:
-        return item[0]
-
     def _parent(self,i:int) -> int:
         return (i-1)//2
 
@@ -113,6 +110,30 @@ class PriorityQueue(Generic[T]):
 
     def _swap(self,i:int,j:int) -> None:
         self._data[i],self._data[j]=self._data[j],self._data[i]
+
+    def _sift_up(self,entry:Tuple[Any,int,T]) -> None:
+        """place entry into the heap. the ancestor chain is compared first and
+        nothing is modified until every comparison has succeeded.
+        """
+        key=(entry[0],entry[1])
+        i=len(self._data)
+        moves:List[int]=[]
+        while i>0:
+            p=self._parent(i)
+            try:
+                goes_above=key<(self._data[p][0],self._data[p][1])
+            except TypeError:
+                raise TypeError("values are not comparable for priority queue") from None
+            if not goes_above:
+                break
+            moves.append(p)
+            i=p
+        self._data.append(entry)  # placeholder, overwritten below
+        j=len(self._data)-1
+        for p in moves:
+            self._data[j]=self._data[p]
+            j=p
+        self._data[j]=entry
 
     def _heapify_up(self,i:int) -> None:
         """restore the heap property by bubbling the item at index i upward."""

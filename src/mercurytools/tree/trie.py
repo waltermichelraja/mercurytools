@@ -2,7 +2,7 @@
 
 
 from __future__ import annotations
-from typing import Iterator, Optional
+from typing import Iterator, List, Optional, Tuple
 
 from ..core.nodes import TrieNode
 from ..core.exceptions import ValueNotFoundError
@@ -61,15 +61,26 @@ class Trie:
         return self._find_node(prefix) is not None
 
     def remove(self,word:str) -> str:
-        """remove word.
+        """remove word, pruning any nodes that no longer lead to a stored word.
         raises ValueNotFoundError if word was not inserted as a complete
         word [including if it exists only as a prefix of longer words]: O(m).
         """
-        node=self._find_node(word)
-        if node is None or not node.is_end:
+        node=self._root
+        path:List[Tuple[TrieNode,str]]=[]
+        for ch in word:
+            child=node.children.get(ch)
+            if child is None:
+                raise ValueNotFoundError(f"{word} not found")
+            path.append((node,ch))
+            node=child
+        if not node.is_end:
             raise ValueNotFoundError(f"{word} not found")
         node.is_end=False
         self._size-=1
+        while path and not node.is_end and not node.children:
+            parent,ch=path.pop()
+            del parent.children[ch]
+            node=parent
         return word
 
     def words_with_prefix(self,prefix:str) -> Iterator[str]:

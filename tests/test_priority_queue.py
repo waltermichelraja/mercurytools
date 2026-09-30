@@ -86,3 +86,46 @@ def test_non_comparable_values():
     pq.push(1)
     with pytest.raises(TypeError):
         pq.push("string")
+
+
+def test_failed_push_leaves_queue_unchanged():
+    pq=PriorityQueue()
+    for v,p in [("a",1),("b",2),("c",3)]:
+        pq.push(v,p)
+    with pytest.raises(TypeError):
+        pq.push("x","not-a-number")
+    assert len(pq)==3
+    assert [pq.pop() for _ in range(3)]==["a","b","c"]
+
+
+def test_failed_push_does_not_consume_tiebreak_counter():
+    pq=PriorityQueue()
+    pq.push("first",1)
+    with pytest.raises(TypeError):
+        pq.push("bad","x")
+    pq.push("second",1)
+    pq.push("third",1)
+    assert [pq.pop() for _ in range(3)]==["first","second","third"]
+
+
+def test_failed_first_push_in_mixed_mode_does_not_lock_mode():
+    pq=PriorityQueue()
+    pq.push("a",1)
+    with pytest.raises(ValueError):
+        pq.push("b")  # mixing modes
+    assert len(pq)==1
+    pq.pop()
+    pq.clear()
+    pq.push("z")  # mode reset after clear()
+    assert pq.pop()=="z"
+
+
+def test_push_pop_matches_sorted_reference():
+    import random
+    rng=random.Random(3)
+    pq=PriorityQueue()
+    items=[(f"v{i}",rng.randint(0,15)) for i in range(200)]
+    for v,p in items:
+        pq.push(v,p)
+    expected=[v for v,_ in sorted(items,key=lambda t:t[1])]  # stable => FIFO ties
+    assert [pq.pop() for _ in range(len(items))]==expected
