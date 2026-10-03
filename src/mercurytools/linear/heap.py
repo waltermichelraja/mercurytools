@@ -64,9 +64,11 @@ class Heap(Generic[T]):
 
 
     def push(self,value:T) -> None:
-        """push value onto the heap: O(log n)."""
-        self._data.append(value)
-        self._heapify_up(len(self._data)-1)
+        """push value onto the heap: O(log n).
+        atomic: if value can't be compared with the elements already
+        stored, TypeError is raised and the heap is left unchanged.
+        """
+        self._sift_up(value)
 
     def pop(self) -> T:
         """remove and return the smallest element [largest, for a max-heap]: O(log n)."""
@@ -114,15 +116,28 @@ class Heap(Generic[T]):
     def _swap(self,i:int,j:int) -> None:
         self._data[i],self._data[j]=self._data[j],self._data[i]
 
-    def _heapify_up(self,i:int) -> None:
-        """restore the heap property by bubbling the item at index i upward."""
+    def _sift_up(self,value:T) -> None:
+        """place value into the heap. the ancestor chain is compared first and
+        nothing is modified until every comparison has succeeded.
+        """
+        i=len(self._data)
+        moves:List[int]=[]
         while i>0:
             p=self._parent(i)
-            if self._before(self._data[i],self._data[p]):
-                self._swap(i,p)
-                i=p
-            else:
+            try:
+                goes_above=self._before(value,self._data[p])
+            except TypeError:
+                raise TypeError("values are not comparable for heap") from None
+            if not goes_above:
                 break
+            moves.append(p)
+            i=p
+        self._data.append(value)
+        j=len(self._data)-1
+        for p in moves:
+            self._data[j]=self._data[p]
+            j=p
+        self._data[j]=value
 
     def _heapify_down(self,i:int) -> None:
         """restore the heap property by sinking the item at index i downward."""
