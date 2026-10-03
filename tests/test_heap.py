@@ -140,3 +140,33 @@ def test_repr():
     h.push(1)
     r=repr(h)
     assert "min" in r and "1" in r
+
+def test_failed_push_leaves_heap_unchanged():
+    h=Heap()
+    for v in [3,1,2]:
+        h.push(v)
+    with pytest.raises(TypeError):
+        h.push("x")
+    assert len(h)==3
+    assert [h.pop() for _ in range(3)]==[1,2,3]
+
+
+def test_failed_push_does_not_corrupt_later_pops():
+    h=Heap(min_heap=False)
+    for v in [10,20,5]:
+        h.push(v)
+    with pytest.raises(TypeError):
+        h.push(None)
+    assert [h.pop() for _ in range(3)]==[20,10,5]
+
+
+def test_push_pop_matches_sorted_reference():
+    import random
+    rng=random.Random(5)
+    for min_heap in (True,False):
+        h=Heap(min_heap=min_heap)
+        values=[rng.randint(0,100) for _ in range(300)]
+        for v in values:
+            h.push(v)
+        expected=sorted(values,reverse=not min_heap)
+        assert [h.pop() for _ in range(len(values))]==expected
